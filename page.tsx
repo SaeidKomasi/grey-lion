@@ -11,47 +11,49 @@ export default function Home() {
 
       {/* PROJECTS */}
       <section id="projects" className="py-20 px-6 border-t border-zinc-800">
-        <h2 className="text-3xl font-semibold text-zinc-100 mb-10">پروژه‌ها</h2>
-        
-        <div className="grid gap-6 md:grid-cols-2">
+        <h2 className="text-3xl font-semibold text-amber-300 mb-10 text-center">⚙ Projects</h2>
+
+        <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
           <div className="rounded-2xl border border-zinc-700 p-4">
-            <p className="text-xs tracking-widest text-amber-400 uppercase">500MW Project</p>
-            <p className="mt-2 text-sm">نیروگاه ۵۰۰ مگاواتی — سیستم زنجیره‌ای اهرمی برای تولید انرژی</p>
+            <p className="text-lg tracking-wide text-amber-400 uppercase">Lever Chain System</p>
+            <p className="mt-2 text-sm">سیستم زنجیره اهرمی برای افزایش نیرو</p>
           </div>
 
           <div className="rounded-2xl border border-zinc-700 p-4">
-            <p className="text-xs tracking-widest text-amber-400 uppercase">Composite Pulleys</p>
-            <p className="mt-2 text-sm">قرقره‌های مرکب — سیستم ضرب نیرو</p>
+            <p className="text-lg tracking-wide text-amber-400 uppercase">Composite Pulleys</p>
+            <p className="mt-2 text-sm">قرقره‌های مرکب – سیستم ضرب نیروی چند مرحله‌ای</p>
           </div>
         </div>
       </section>
 
       {/* VISION */}
       <section id="vision" className="py-20 px-6 border-t border-zinc-800">
-        <p className="text-xs tracking-widest text-amber-400 uppercase opacity-80">Vision</p>
-        <p className="text-sm w-full md:w-[90%] leading-7 mt-4 text-zinc-200">
-          شیر خاکستری نماد یک لوگو نیست؛ یک مسیر است — ترکیب قدرت + دقت.
-          آینده جاییست که انسان‌ها اشتباه را نمی‌ترسند؛ یاد می‌گیرند، بهتر می‌سازند، جلو می‌روند.
+        <h2 className="text-3xl font-semibold text-amber-300 mb-10 text-center">🔭 Vision</h2>
+        <p className="max-w-2xl mx-auto text-center text-zinc-300 leading-8">
+          تولید نیروگاه‌ های مکانیکی با بازده بالا جهت تامین پایدار انرژی در آینده بشر.
+          هدف نهایی: 500 مگاوات با سیستم اهرمی.
         </p>
       </section>
 
       {/* CONTACT */}
       <section id="contact" className="py-20 px-6 border-t border-zinc-800">
-        <h2 className="text-3xl font-semibold mb-6">ارتباط با ما</h2>
-        <p className="text-sm text-zinc-300 mb-6">برای همکاری، سرمایه‌گذاری یا توسعه پروژه‌ها:</p>
+        <h2 className="text-3xl font-semibold text-amber-300 mb-10 text-center">📩 Contact</h2>
 
-        <div className="flex flex-col gap-3 text-sm">
-          <a href="mailto:saeedkomasy@gmail.com" className="hover:text-amber-300">📩 saeedkomasy@gmail.com</a>
-          <a href="mailto:saeid.komasi.inventor@gmail.com" className="hover:text-amber-300">📮 saeid.komasi.inventor@gmail.com</a>
+        <div className="text-center space-y-3">
+          <a href="mailto:saeedkomasy@gmail.com" className="hover:text-amber-300 text-lg">
+            📧 saeedkomasy@gmail.com
+          </a>
+          <br/>
+          <a href="mailto:saeid.komasi.inventor@gmail.com" className="hover:text-amber-300 text-lg">
+            📨 saeid.komasi.inventor@gmail.com
+          </a>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-zinc-900 py-8 text-center text-xs opacity-60">
-        © {new Date().getFullYear()} Saeid Komasi — Grey Lion Authority  
-        <br /> Built with Next.js + TypeScript + Tailwind CSS + Vercel
+      <footer className="border-t border-zinc-900 py-8 text-center text-xs opacity-50">
+        © {new Date().getFullYear()}  Saeid Komasi — Grey Lion Authority
       </footer>
-
     </main>
   );
 }
