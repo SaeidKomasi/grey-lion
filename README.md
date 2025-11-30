@@ -1,2 +1,3 @@
-# grey-lion
-Grey Lion – Power
+# Grey Lion
+
+Simple Next.js landing page V3.
