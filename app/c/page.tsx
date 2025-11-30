@@ -1,8 +1,8 @@
-export default function CPage() {
+export default function Home() {
   return (
-    <main className="min-h-screen bg-black text-white flex items-center justify-center">
-      <h1 className="text-5xl font-bold tracking-wider">
-        GREY LION — INNER SYSTEM
+    <main className="flex min-h-screen items-center justify-center text-white bg-black">
+      <h1 className="text-6xl font-bold">
+        🦁 Grey Lion — Power & Precision
       </h1>
     </main>
   );
