@@ -3,58 +3,169 @@
 import { useState } from "react";
 import Image from "next/image";
 
-type Lang = "fa" | "en" | "pl";
+type Lang = "fa" | "en" | "pl" | "az" | "ka" | "kk" | "tk" | "mn" | "ru";
 
-const TEXT = {
+const TEXT: Record<
+  Lang,
+  {
+    companyTag: string;
+    companyTitle1: string;
+    companyTitle2: string;
+    companyDesc: string;
+    servicesTitle: string;
+    routesTitle: string;
+    greyLionTag: string;
+    greyLionTitle: string;
+    greyLionDesc: string;
+    contactTitle: string;
+    contactText: string;
+  }
+> = {
   fa: {
     companyTag: "شرکت حمل‌ونقل بین‌المللی",
     companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "حمل‌ونقل جاده‌ای اروپا – خاورمیانه",
+    companyTitle2: "حمل‌ونقل اروپا – خاورمیانه – آسیای مرکزی",
     companyDesc:
-      "شرکت SAEID4061 SP. Z O.O. یک شرکت حمل‌ونقل بین‌المللی مستقر در لهستان است که روی مسیرهای اروپا ↔ خاورمیانه تمرکز دارد. از برنامه‌ریزی مسیر و تشریفات گمرکی تا رهگیری محموله و تحویل نهایی، همه چیز زیر یک مدیریت انجام می‌شود.",
+      "شرکت SAEID4061 SP. Z O.O. یک شرکت حمل‌ونقل بین‌المللی مستقر در لهستان است که روی کریدورهای اروپا ↔ خاورمیانه ↔ آسیای میانه تمرکز دارد. از برنامه‌ریزی مسیر، تشریفات مرزی، CMR, TIR, EORI, SENT, EPD تا رهگیری و تحویل نهایی، تمام مراحل زیر یک مدیریت انجام می‌شود.",
     servicesTitle: "خدمات اصلی",
     routesTitle: "مسیرهای فعال حمل‌ونقل بین‌المللی",
-    greyLionTag: "GREY LION – POWER & PRECISION",
-    greyLionTitle: "Saeid Komasi – Engineering & Inventions",
+    greyLionTag: "GREY LION – قدرت و دقت",
+    greyLionTitle: "Saeid Komasi – اختراعات و تحقیقات مهندسی",
     greyLionDesc:
-      "در بخش Grey Lion ایده‌ها و اختراعات مکانیکی معرفی می‌شوند؛ از سیستم‌های زنجیره اهرمی و قرقره‌های مرکب تا نیروگاه‌های مکانیکی ۵۰۰ مگاواتی. این قسمت بیشتر جنبهٔ شخصی، تحقیقاتی و R&D دارد.",
-    contactTitle: "تماس برای همکاری و قرارداد",
+      "در بخش Grey Lion ایده‌ها و اختراعات مکانیکی شامل سیستم زنجیره اهرمی، قرقره‌های مرکب و نیروگاه مکانیکی ۵۰۰ مگاواتی معرفی می‌شوند. این بخش ماهیت پژوهشی و R&D دارد.",
+    contactTitle: "ارتباط برای قرارداد و همکاری",
     contactText:
-      "برای حمل‌ونقل بین‌المللی، همکاری در پروژه‌های انرژی و یا مذاکره درباره اختراعات ثبت‌شده، مستقیماً با مدیریت شرکت در تماس باشید.",
+      "برای حمل‌ونقل بین‌المللی، سرمایه‌گذاری، توسعه پروژه‌های انرژی یا دریافت نمایندگی، لطفاً مستقیماً با مدیریت شرکت تماس بگیرید.",
   },
   en: {
     companyTag: "International Road Transport",
     companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "European–Middle East Road Transport",
+    companyTitle2: "European – Middle East – Central Asia Transport",
     companyDesc:
-      "SAEID4061 SP. Z O.O. is an international road transport company based in Poland, focused on EU ↔ Middle East corridors. From route planning and customs documentation to real–time tracking and final delivery, everything is coordinated under one management.",
+      "SAEID4061 SP. Z O.O. is an international road transport operator based in Poland, operating EU ↔ Middle East ↔ Central Asia freight corridors. Full chain: route planning, border/customs documents, CMR/TIR, SENT, EPD, tracking and final delivery — all under one management.",
     servicesTitle: "Core Services",
     routesTitle: "Active International Transport Corridors",
     greyLionTag: "GREY LION – POWER & PRECISION",
     greyLionTitle: "Saeid Komasi – Engineering & Inventions",
     greyLionDesc:
-      "The Grey Lion section presents mechanical inventions and concepts: lever–chain systems, composite pulleys and mechanical power–plant ideas up to 500 MW. This area is focused on R&D and long–term innovation.",
-    contactTitle: "Contact for Cooperation & Contracts",
+      "The Grey Lion division presents mechanical invention concepts including Lever–Chain multiplication systems, Composite Pulley Energy Storage and 500MW Mechanical Powerplant architecture. Focus: R&D and applied industrial engineering.",
+    contactTitle: "Contact for Business & Cooperation",
     contactText:
-      "For international transport, energy projects or licensing of registered inventions, please contact the company management directly.",
+      "For freight booking, transport cooperation, technology licensing or investment inquiry — please contact company management directly.",
   },
   pl: {
     companyTag: "Międzynarodowy transport drogowy",
     companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "Transport drogowy Europa – Bliski Wschód",
+    companyTitle2: "Transport Europa – Bliski Wschód – Azja Centralna",
     companyDesc:
-      "SAEID4061 SP. Z O.O. to spółka transportu drogowego z siedzibą w Polsce, skoncentrowana na korytarzach UE ↔ Bliski Wschód. Od planowania trasy i dokumentów celnych po monitorowanie ładunku i dostawę końcową – wszystko odbywa się pod jedną kontrolą.",
+      "SAEID4061 SP. Z O.O. to operator transportu drogowego z siedzibą w Polsce. Obsługujemy korytarze UE ↔ Bliski Wschód ↔ Azja Centralna. Kompleksowa obsługa: planowanie trasy, dokumenty graniczne, CMR/TIR, SENT/EPD, monitoring ładunku i finalna dostawa.",
     servicesTitle: "Główne usługi",
-    routesTitle: "Aktywne korytarze transportu międzynarodowego",
-    greyLionTag: "GREY LION – POWER & PRECISION",
-    greyLionTitle: "Saeid Komasi – Inżynieria i wynalazki",
+    routesTitle: "Aktywne międzynarodowe korytarze transportowe",
+    greyLionTag: "GREY LION – MOC I PRECYZJA",
+    greyLionTitle: "Saeid Komasi – Inżynieria i Wynalazki",
     greyLionDesc:
-      "Sekcja Grey Lion prezentuje projekty i wynalazki mechaniczne: systemy dźwigniowe, złożone systemy linowo–bębnowe oraz koncepcję elektrowni mechanicznych do 500 MW. Obszar ukierunkowany na R&D i innowacje długoterminowe.",
-    contactTitle: "Kontakt w sprawie współpracy i umów",
+      "Grey Lion prezentuje systemy mechaniczne: dźwignie–łańcuch, złożone układy linowo–bębnowe oraz koncepcję elektrowni mechanicznej 500 MW. Obszar skoncentrowany na R&D.",
+    contactTitle: "Kontakt biznesowy i współpraca",
     contactText:
-      "W sprawie transportu międzynarodowego, projektów energetycznych lub licencji na wynalazki prosimy o bezpośredni kontakt z zarządem spółki.",
+      "W sprawie zleceń transportowych, inwestycji lub technologii zapraszamy do kontaktu bezpośredniego.",
   },
-} satisfies Record<Lang, any>;
+  az: {
+    companyTag: "Beynəlxalq yükdaşıma",
+    companyTitle1: "SAEID4061 SP. Z O.O.",
+    companyTitle2: "Avropa – Yaxın Şərq – Mərkəzi Asiya daşımaları",
+    companyDesc:
+      "SAEID4061 SP. Z O.O. Polşada yerləşən beynəlxalq avtomobil daşımaları şirkətidir. Əsas koridorlar: Avropa ↔ Yaxın Şərq ↔ Mərkəzi Asiya. Marşrut planlaşdırılması, gömrük sənədləri, CMR/TIR, EPD/SENT, yüklərin izlənməsi və son təhvil vahid idarəetmə ilə aparılır.",
+    servicesTitle: "Əsas xidmətlər",
+    routesTitle: "Aktiv beynəlxalq marşrutlar",
+    greyLionTag: "GREY LION – GÜC VƏ DƏQIQLIK",
+    greyLionTitle: "Saeid Komasi – Mühəndislik və ixtiralar",
+    greyLionDesc:
+      "Grey Lion bölməsi mexaniki sistemlər təqdim edir: Lever-Chain güc artırma sistemi, Kompozit kasnak enerjisi və 500MW mexaniki elektrik stansiyası konsepsiyası.",
+    contactTitle: "Əlaqə və əməkdaşlıq",
+    contactText:
+      "Daşınma, əməkdaşlıq və ya investisiya üçün birbaşa rəhbərliklə əlaqə saxlayın.",
+  },
+  ka: {
+    companyTag: "საერთაშორისო გადაზიდვები",
+    companyTitle1: "SAEID4061 SP. Z O.O.",
+    companyTitle2: "ევროპა – ახლო აღმოსავლეთი – ცენტრალური აზია",
+    companyDesc:
+      "SAEID4061 SP. Z O.O. პოლონეთში დაფუძნებული საერთაშორისო სატრანსპორტო ოპერატორია. კორკეთორები: ევროკავშირი ↔ ახლო აღმოსავლეთი ↔ ცენტრალური აზია. სრული ციკლი: გზის დაგეგმვა, საბაჟო, CMR/TIR, SENT/EPD, მონიტორინგი და მიწოდება ერთ სისტემაში.",
+    servicesTitle: "საბაზისო მომსახურებები",
+    routesTitle: "აქტიური საერთაშორისო მარშრუტები",
+    greyLionTag: "GREY LION – ძალა და სიზუსტე",
+    greyLionTitle: "Saeid Komasi – ინჟინერია და გამოგონებები",
+    greyLionDesc:
+      "Grey Lion წარმოადგენს მექანიკურ ინოვაციებს: ლევერის ჯაჭვის მოდულაცია, კომპოზიტური ბლოკები და 500MW მექანიკური ენერგიის სისტემა.",
+    contactTitle: "კონტაქტი და თანამშრომლობა",
+    contactText:
+      "გადაზიდვა, ინვესტიცია ან ტექნოლოგიური პარტნიორობა — დაუკავშირდით მენეჯმენტს პირდაპირ.",
+  },
+  kk: {
+    companyTag: "Халықаралық жүк тасымалы",
+    companyTitle1: "SAEID4061 SP. Z O.O.",
+    companyTitle2: "Еуропа – Таяу Шығыс – Орталық Азия",
+    companyDesc:
+      "SAEID4061 SP. Z O.O. — Польшада орналасқан халықаралық автокөлік тасымалдаушысы. ЕО ↔ Таяу Шығыс ↔ Орталық Азия бағыттарына қызмет көрсетеді. Маршрут, кеден, CMR/TIR, SENT/EPD, бақылау және жеткізу — бәрі бір басқаруда.",
+    servicesTitle: "Басты қызметтер",
+    routesTitle: "Халықаралық бағыттар",
+    greyLionTag: "GREY LION – ҚУАТ ЖӘНЕ ДӘЛДІК",
+    greyLionTitle: "Saeid Komasi – Инженерлік және жаңалықтар",
+    greyLionDesc:
+      "Grey Lion механикалық жобаларды қамтиды: иінтірек–тізбек өсіргіш, композиттік шкив және 500МВт механикалық энергетикалық станция тұжырымдамасы.",
+    contactTitle: "Байланыс және әріптестік",
+    contactText:
+      "Тасымал, R&D және инвестиция бойынша сұраныс — компанияға тікелей хабарласыңыз.",
+  },
+  tk: {
+    companyTag: "Halkara ýük daşyma",
+    companyTitle1: "SAEID4061 SP. Z O.O.",
+    companyTitle2: "Ýewropa – Ýakyn Gündogar – Merkezi Aziýa",
+    companyDesc:
+      "SAEID4061 SP. Z O.O. — Polşada ýerleşýän halkara ýük daşaýan kompaniýa. Ugurlar: ÝB ↔ Ýakyn Gündogar ↔ Merkezi Aziýa. Marşrut, gümrük, CMR/TIR, SENT/EPD, gözegçilik we ýetirmek — hemmesi bir dolandyryş bilen.",
+    servicesTitle: "Esasy hyzmatlar",
+    routesTitle: "Halkara hereket ugurlary",
+    greyLionTag: "GREY LION – GÜÇ WE TAKYKLYK",
+    greyLionTitle: "Saeid Komasi – Inženerçilik we Içtira",
+    greyLionDesc:
+      "Grey Lion mehaniki çözgütleri görkezýär: lever–zanjyr güýji artdyryjy, toplumlaýyn kasnak energiýasy we 500MW mehaniki elektrik bekedi konsepsiýasy.",
+    contactTitle: "Habarlaşmak & hyzmatdaşlyk",
+    contactText:
+      "Daşama, maýa goýum we tehnologiýa hyzmatdaşlygy üçin kompaniýa bilen göni habarlaşyň.",
+  },
+  mn: {
+    companyTag: "Олон улсын авто тээвэр",
+    companyTitle1: "SAEID4061 SP. Z O.O.",
+    companyTitle2: "Европ – Ойрхи Дорнод – Төв Ази",
+    companyDesc:
+      "SAEID4061 SP. Z O.O. нь Польш улсад байрладаг олон улсын ачаа тээврийн компани юм. Европ ↔ Ойрхи Дорнод ↔ Төв Ази коридороор үйлчилдэг. Маршрут, гааль, CMR/TIR, SENT/EPD, хяналт, хүргэлт — нэг удирдлагаар.",
+    servicesTitle: "Үндсэн үйлчилгээ",
+    routesTitle: "Олон улсын тээврийн коридорууд",
+    greyLionTag: "GREY LION – ХҮЧ & НАРИЙВЧЛАЛ",
+    greyLionTitle: "Saeid Komasi – Инженерчлэл & Шинэ бүтээл",
+    greyLionDesc:
+      "Grey Lion — хөшүүргийн гинжин өсгөгч систем, нийлмэл дамрын энергийн нөөцлөлт, 500MW механик цахилгаан үүсгүүрийн архитектур.",
+    contactTitle: "Холбоо & хамтын ажиллагаа",
+    contactText:
+      "Тээвэр, хөрөнгө оруулалт, лиценз — компанийн удирдлагад шууд занал уу.",
+  },
+  ru: {
+    companyTag: "Международные автоперевозки",
+    companyTitle1: "SAEID4061 SP. Z O.O.",
+    companyTitle2: "Европа – Ближний Восток – Центральная Азия",
+    companyDesc:
+      "SAEID4061 SP. Z O.O. — международный оператор грузоперевозок, расположенный в Польше. Основные коридоры: ЕС ↔ Ближний Восток ↔ Центральная Азия. Полный цикл — маршрут, таможня, CMR/TIR, SENT/EPD, отслеживание и доставка — под единым управлением.",
+    servicesTitle: "Основные услуги",
+    routesTitle: "Активные международные маршруты",
+    greyLionTag: "GREY LION – МОЩНОСТЬ & ТОЧНОСТЬ",
+    greyLionTitle: "Saeid Komasi – Инженерия & Изобретения",
+    greyLionDesc:
+      "Grey Lion представляет механические разработки: Lever–Chain усилитель, композитные шкивы, а также концепцию механической электростанции мощностью 500 МВт.",
+    contactTitle: "Контакты & сотрудничество",
+    contactText:
+      "Перевозки, партнерство, инвестиции — обращайтесь напрямую к руководству компании.",
+  },
+};
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("fa");
@@ -62,214 +173,74 @@ export default function Home() {
 
   return (
     <main className="min-h-screen w-full bg-black text-white">
-      {/* HEADER */}
-      <header className="sticky top-0 z-50 border-b border-zinc-900 bg-zinc-950/80 backdrop-blur">
+      <header className="sticky top-0 border-b border-zinc-800 bg-black/70 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-3">
-            <div className="relative h-9 w-9 overflow-hidden rounded-full border border-sky-500/60 bg-black">
-              <Image
-                src="/saeid4061-logo.png" // اگر jpg هست اینجا پسوند رو عوض کن
-                alt="SAEID4061 Logo"
-                fill
-                className="object-cover"
-              />
+          <div className="flex items-center gap-2">
+            <div className="relative h-9 w-9 overflow-hidden rounded-full border border-sky-400/60">
+              <Image src="/saeid4061-logo.jpg" alt="logo" fill className="object-cover"/>
             </div>
-            <div className="flex flex-col leading-tight">
-              <span className="text-[10px] uppercase tracking-[0.18em] text-sky-400">
-                SAEID4061 SP. Z O.O.
-              </span>
-              <span className="text-xs text-zinc-300">
-                International Transport & Grey Lion Lab
-              </span>
-            </div>
+            <span className="text-xs uppercase tracking-[0.2em] text-sky-300">
+              SAEID4061 · Grey Lion
+            </span>
           </div>
 
-          {/* Language switcher */}
-          <div className="flex items-center gap-2 text-xs">
-            <span className="hidden text-zinc-400 sm:inline">Language:</span>
-            <select
-              className="rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1 text-xs text-zinc-100"
-              value={lang}
-              onChange={(e) => setLang(e.target.value as Lang)}
-            >
-              <option value="fa">فارسی</option>
-              <option value="en">English</option>
-              <option value="pl">Polski</option>
-            </select>
-          </div>
+          <select
+            value={lang}
+            onChange={e => setLang(e.target.value as Lang)}
+            className="rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1 text-xs"
+          >
+            <option value="fa">فارسی</option>
+            <option value="en">English</option>
+            <option value="pl">Polski</option>
+            <option value="az">AZ</option>
+            <option value="ka">KA</option>
+            <option value="kk">KZ</option>
+            <option value="tk">TM</option>
+            <option value="mn">MN</option>
+            <option value="ru">RU 🇷🇺</option>
+          </select>
         </div>
       </header>
 
-      {/* COMPANY SECTION */}
-      <section
-        id="transport"
-        className="border-b border-zinc-900 bg-gradient-to-b from-sky-950 via-slate-950 to-black"
-      >
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-12 lg:flex-row lg:items-center">
-          {/* Left */}
-          <div className="flex-1 space-y-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-sky-400">
-              {t.companyTag}
-            </p>
-            <h1 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-              {t.companyTitle1}
-              <span className="block text-sky-300">{t.companyTitle2}</span>
-            </h1>
+      <section className="px-4 py-12">
+        <p className="text-sky-300 text-xs uppercase tracking-[0.3em]">{t.companyTag}</p>
+        <h1 className="text-3xl font-bold mt-2">{t.companyTitle1}</h1>
+        <h2 className="text-sky-300 text-xl mb-6">{t.companyTitle2}</h2>
+        <p className="text-zinc-200 text-sm max-w-xl leading-6">{t.companyDesc}</p>
 
-            <p className="max-w-xl text-sm leading-relaxed text-zinc-200">
-              {t.companyDesc}
-            </p>
-
-            <div className="grid gap-4 text-sm sm:grid-cols-2">
-              {/* خدمات / Core services */}
-              <div className="rounded-2xl border border-sky-900/60 bg-sky-950/40 p-4">
-                <h3 className="mb-1 text-sm font-semibold text-sky-300">
-                  {t.servicesTitle}
-                </h3>
-                <ul className="space-y-1 text-xs text-zinc-200">
-                  <li>• Transport drogowy towarów – PKD 49.41.Z</li>
-                  <li>• FTL / LTL – long & medium distance</li>
-                  <li>• TIR / CMR, koordynacja dokumentów granicznych</li>
-                  <li>• Doradztwo trasy i kosztów dla stałych klientów</li>
-                </ul>
-              </div>
-
-              {/* مسیرها / Routes */}
-              <div className="rounded-2xl border border-sky-900/60 bg-slate-950/60 p-4">
-                <h3 className="mb-1 text-sm font-semibold text-sky-300">
-                  {t.routesTitle}
-                </h3>
-                <ul className="space-y-1 text-xs text-zinc-200">
-                  <li>• European Union 🇪🇺 ↔ Poland 🇵🇱 (central hub)</li>
-                  <li>• Germany, Netherlands, Belgium, France, Italy</li>
-                  <li>• Türkiye 🇹🇷 ↔ Iran 🇮🇷 (main gateway)</li>
-                  <li>• Azerbaijan 🇦🇿</li>
-                  <li>• Georgia 🇬🇪</li>
-                  <li>• Kazakhstan 🇰🇿</li>
-                  <li>• Turkmenistan 🇹🇲</li>
-                  <li>• Mongolia 🇲🇳</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="grid gap-2 text-xs text-zinc-300">
-              <div>
-                KRS: <span className="font-mono">0001065392</span> · NIP:{" "}
-                <span className="font-mono">5372677546</span> · REGON:{" "}
-                <span className="font-mono">526744160</span>
-              </div>
-              <div>Adres: Orzechowa 32/1, 21-500 Biała Podlaska, Poland</div>
-              <div>
-                E-mail:{" "}
-                <a
-                  href="mailto:saeedkomasy@gmail.com"
-                  className="text-sky-300 underline-offset-2 hover:underline"
-                >
-                  saeedkomasy@gmail.com
-                </a>
-              </div>
-            </div>
+        <div className="grid sm:grid-cols-2 gap-4 mt-8">
+          <div className="border border-sky-800 p-4 rounded-xl">
+            <h3 className="text-sky-300 text-sm mb-2">{t.servicesTitle}</h3>
+            <ul className="text-xs text-zinc-200 space-y-1">
+              <li>• CMR / TIR Freight Transport</li>
+              <li>• EU–ME–CA Corridor Operations</li>
+              <li>• SENT / EPD / Customs Docs</li>
+              <li>• Route & Border Coordination</li>
+            </ul>
           </div>
 
-          {/* Right – logo big */}
-          <div className="flex flex-1 items-center justify-center">
-            <div className="relative h-56 w-56 sm:h-72 sm:w-72 lg:h-80 lg:w-80">
-              <div className="absolute -inset-4 rounded-full bg-sky-500/10 blur-2xl" />
-              <div className="relative h-full w-full overflow-hidden rounded-full border border-sky-600/70 bg-black shadow-[0_0_40px_rgba(56,189,248,0.6)]">
-                <Image
-                  src="/saeid4061-logo.png"
-                  alt="SAEID4061 Transport Logo"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* GREY LION SECTION */}
-      <section
-        id="grey-lion"
-        className="border-b border-zinc-900 bg-gradient-to-b from-black via-zinc-950 to-black"
-      >
-        <div className="mx-auto max-w-6xl px-4 py-14">
-          <div className="mb-10 space-y-4 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-400">
-              {t.greyLionTag}
-            </p>
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              {t.greyLionTitle}
-            </h2>
-            <p className="mx-auto max-w-3xl text-sm leading-relaxed text-zinc-300">
-              {t.greyLionDesc}
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            <article className="rounded-2xl border border-amber-500/40 bg-zinc-950/70 p-5">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">
-                PROJECT 01
-              </p>
-              <h3 className="text-lg font-semibold text-amber-300">
-                Lever Chain System
-              </h3>
-              <p className="mt-2 text-sm text-zinc-200">
-                سیستم زنجیره اهرمی برای افزایش گشتاور و تبدیل حرکت رفت و برگشتی
-                به دوران پیوسته؛ طراحی شده برای استفاده در نیروگاه‌های مکانیکی
-                با توان بالا.
-              </p>
-            </article>
-
-            <article className="rounded-2xl border border-amber-500/40 bg-zinc-950/70 p-5">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">
-                PROJECT 02
-              </p>
-              <h3 className="text-lg font-semibold text-amber-300">
-                Composite Pulley Design
-              </h3>
-              <p className="mt-2 text-sm text-zinc-200">
-                طراحی قرقره‌های مرکب برای ضرب نیرو و تبدیل حرکت خطی به دورانی،
-                مناسب برای درام‌ها، سیستم‌های بالابر و تبدیل انرژی مکانیکی.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" className="border-t border-zinc-900 bg-black">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-white">
-              {t.contactTitle}
-            </h3>
-            <p className="mt-2 max-w-xl text-sm text-zinc-300">
-              {t.contactText}
-            </p>
-          </div>
-          <div className="space-y-1 text-sm text-zinc-200">
-            <p>
-              E-mail:{" "}
-              <a
-                href="mailto:saeid.komasi.inventor@gmail.com"
-                className="text-sky-400 underline-offset-2 hover:underline"
-              >
-                saeid.komasi.inventor@gmail.com
-              </a>
-            </p>
-            <p>
-              Phone (PL):{" "}
-              <span className="font-mono text-zinc-100">+48 881 004 737</span>
-            </p>
-            <p>Adres: Orzechowa 32/1, 21-500 Biała Podlaska, Poland</p>
+          <div className="border border-sky-800 p-4 rounded-xl">
+            <h3 className="text-sky-300 text-sm mb-2">{t.routesTitle}</h3>
+            <ul className="text-xs text-zinc-200 space-y-1">
+              <li>• EU ↔ Poland 🇵🇱</li>
+              <li>• Türkiye 🇹🇷 ↔ Iran 🇮🇷</li>
+              <li>• Azerbaijan 🇦🇿 · Georgia 🇬🇪</li>
+              <li>• Kazakhstan 🇰🇿 · Turkmenistan 🇹🇲</li>
+              <li>• Mongolia 🇲🇳</li>
+            </ul>
           </div>
         </div>
 
-        <div className="border-t border-zinc-900 py-4 text-center text-xs text-zinc-500">
-          © {new Date().getFullYear()} SAEID4061 SP. Z O.O. · Grey Lion Studio
+        <div className="mt-10 border border-amber-500 p-6 rounded-xl">
+          <h3 className="text-amber-300 text-sm">{t.greyLionTag}</h3>
+          <p className="text-lg font-bold mt-1">{t.greyLionTitle}</p>
+          <p className="text-xs text-zinc-200 mt-2">{t.greyLionDesc}</p>
         </div>
+
+        <footer className="mt-10 p-4 border-t border-zinc-800 text-xs text-zinc-400">
+          <p>{t.contactTitle}</p>
+          <p>{t.contactText}</p>
+        </footer>
       </section>
     </main>
   );
