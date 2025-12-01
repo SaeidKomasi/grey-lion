@@ -1,321 +1,272 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
-type Lang = "fa" | "en" | "pl" | "az" | "ka" | "kk" | "tk" | "mn" | "ru";
-
-const TEXT: Record<
-  Lang,
-  {
-    companyTag: string;
-    companyTitle1: string;
-    companyTitle2: string;
-    companyDesc: string;
-    servicesTitle: string;
-    servicesList: string[];
-    routesTitle: string;
-    greyLionTag: string;
-    greyLionTitle: string;
-    greyLionDesc: string;
-    contactTitle: string;
-    contactText: string;
-  }
-> = {
-  fa: {
-    companyTag: "شرکت حمل‌ونقل بین‌المللی",
-    companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "حمل‌ونقل جاده‌ای اروپا – خاورمیانه – آسیای مرکزی",
-    companyDesc:
-      "شرکت SAEID4061 SP. Z O.O. در لهستان مستقر است و روی کریدورهای اروپا ↔ خاورمیانه ↔ آسیای میانه تمرکز دارد. از برنامه‌ریزی مسیر، اسناد CMR / TIR، تشریفات SENT / EPD / EORI تا رهگیری و تحویل نهایی، تمام مراحل زیر یک مدیریت انجام می‌شود.",
-    servicesTitle: "خدمات اصلی شرکت",
-    servicesList: [
-      "حمل‌ونقل بین‌المللی جاده‌ای (CMR / TIR)",
-      "حمل کامل (FTL) و خُرد (LTL)",
-      "آماده‌سازی و هماهنگی مدارک SENT, EPD, EORI, CMR",
-      "خدمات ترانزیت، Cross-border و Door-to-Door",
-      "مشاوره مسیر و هزینه برای مشتریان ثابت",
-    ],
-    routesTitle: "مسیرها و کریدورهای فعال",
-    greyLionTag: "GREY LION – بخش تحقیقات و اختراعات",
-    greyLionTitle: "Saeid Komasi – سیستم‌های مکانیکی و نیروگاه ۵۰۰ مگاواتی",
-    greyLionDesc:
-      "در بخش Grey Lion روی سیستم‌های مکانیکی با گشتاور بالا، زنجیره اهرمی، قرقره‌های مرکب و طرح نیروگاه مکانیکی ۵۰۰ مگاواتی کار می‌شود. هدف، افزایش راندمان، سادگی مکانیکی و امکان استفاده صنعتی در مقیاس بزرگ است.",
-    contactTitle: "ارتباط و همکاری",
-    contactText:
-      "برای استعلام قیمت حمل، قراردادهای طولانی‌مدت، سرمایه‌گذاری روی پروژه‌های انرژی یا توسعه مشترک، لطفاً از طریق واتساپ یا ایمیل مستقیم تماس بگیرید.",
-  },
-  en: {
-    companyTag: "International Road Transport Company",
-    companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "European – Middle East – Central Asia Transport Corridors",
-    companyDesc:
-      "SAEID4061 SP. Z O.O. is a Poland-based international road transport operator focused on EU ↔ Middle East ↔ Central Asia corridors. We handle the full chain: route planning, CMR / TIR documents, SENT / EPD / EORI procedures, transit and final delivery under one management.",
-    servicesTitle: "Core Services",
-    servicesList: [
-      "International road freight (CMR / TIR)",
-      "Full truckload (FTL) and groupage / LTL",
-      "Customs & border documentation: SENT, EPD, EORI, CMR",
-      "Transit, cross-border and door-to-door solutions",
-      "Route & cost advisory for regular customers",
-    ],
-    routesTitle: "Main Corridors & Routes",
-    greyLionTag: "GREY LION – R&D and Inventions",
-    greyLionTitle: "Saeid Komasi – Mechanical Systems & 500MW Concept",
-    greyLionDesc:
-      "Grey Lion is the R&D side of the project: lever-chain mechanical multipliers, composite pulley systems and a 500MW mechanical powerplant concept. Focus on high-torque, low-speed mechanical energy transmission for industrial use.",
-    contactTitle: "Business Contact & Cooperation",
-    contactText:
-      "For freight inquiries, long-term contracts, investment or technology cooperation, contact directly via WhatsApp or e-mail.",
-  },
-  pl: {
-    companyTag: "Międzynarodowy transport drogowy",
-    companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "Korytarze transportowe: Europa – Bliski Wschód – Azja Centralna",
-    companyDesc:
-      "SAEID4061 SP. Z O.O. to operator międzynarodowego transportu drogowego z siedzibą w Polsce. Obsługujemy korytarze UE ↔ Bliski Wschód ↔ Azja Centralna, zapewniając planowanie tras, dokumenty CMR / TIR, procedury SENT / EPD / EORI oraz pełen nadzór nad dostawą.",
-    servicesTitle: "Główne usługi",
-    servicesList: [
-      "Międzynarodowy transport drogowy towarów (CMR / TIR)",
-      "Ładunki całopojazdowe (FTL) i częściowe (LTL)",
-      "Koordynacja dokumentów SENT, EPD, EORI, CMR",
-      "Rozwiązania tranzytowe i door-to-door",
-      "Doradztwo trasowe i kosztowe dla stałych klientów",
-    ],
-    routesTitle: "Korytarze i trasy",
-    greyLionTag: "GREY LION – dział badawczo-rozwojowy",
-    greyLionTitle: "Saeid Komasi – systemy mechaniczne i koncepcja 500 MW",
-    greyLionDesc:
-      "Grey Lion to część R&D: systemy dźwigniowo-łańcuchowe, złożone układy linowo-bębnowe oraz koncepcja elektrowni mechanicznej 500 MW, nastawione na wysoki moment obrotowy przy niskich prędkościach.",
-    contactTitle: "Kontakt biznesowy",
-    contactText:
-      "W sprawie zleceń transportowych, długoterminowej współpracy lub inwestycji prosimy o bezpośredni kontakt przez WhatsApp lub e-mail.",
-  },
-  az: {
-    companyTag: "Beynəlxalq avtomobil yükdaşıma şirkəti",
-    companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "Avropa – Yaxın Şərq – Mərkəzi Asiya korridoarları",
-    companyDesc:
-      "SAEID4061 SP. Z O.O. Polşada yerləşən beynəlxalq yükdaşıma operatorudur. Şirkət Avropa ↔ Yaxın Şərq ↔ Mərkəzi Asiya korridoarlarında FTL və LTL daşımalar, CMR / TIR sənədləri və SENT / EPD / EORI prosedurlarını idarə edir.",
-    servicesTitle: "Əsas xidmətlər",
-    servicesList: [
-      "CMR / TIR beynəlxalq avtomobil daşımaları",
-      "FTL və LTL yüklərin daşınması",
-      "SENT, EPD, EORI, CMR sənədlərinin hazırlanması və koordinasiyası",
-      "Tranzit və door-to-door logistika həlləri",
-      "Marşrut və xərclər üzrə məsləhət",
-    ],
-    routesTitle: "Aktiv marşrutlar",
-    greyLionTag: "GREY LION – tədqiqat və ixtiralar",
-    greyLionTitle: "Saeid Komasi – mexaniki sistemlər və 500MW konsepsiyası",
-    greyLionDesc:
-      "Grey Lion bölməsi yüksək momentli mexaniki sistemlər, Lever-Chain güc çoxaldıcıları və 500MW mexaniki elektrik stansiyası konsepsiyası üzərində işləyir.",
-    contactTitle: "Əlaqə və əməkdaşlıq",
-    contactText:
-      "Daşınma sorğuları, uzunmüddətli müqavilələr və ya investisiya üçün birbaşa WhatsApp və e-poçt vasitəsilə əlaqə saxlayın.",
-  },
-  ka: {
-    companyTag: "საერთაშორისო სატრანსპორტო კომპანია",
-    companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "ევროპა – ახლო აღმოსავლეთი – ცენტრალური აზია",
-    companyDesc:
-      "SAEID4061 SP. Z O.O. პოლონეთში დაფუძნებული საერთაშორისო სატრანსპორტო ოპერატორია, რომელიც ემსახურება ევროპა ↔ ახლო აღმოსავლეთი ↔ ცენტრალური აზია მიმართულებებს. ვუზრუნველყოფთ მარშრუტის დაგეგმვას, CMR / TIR დოკუმენტებს, SENT / EPD / EORI პროცედურებსა და მიწოდების სრულ კონტროლს.",
-    servicesTitle: "ძირითადი სერვისები",
-    servicesList: [
-      "საერთაშორისო გადაზიდვები (CMR / TIR)",
-      "სრული (FTL) და ჯგუფური (LTL) გადაზიდვები",
-      "SENT, EPD, EORI, CMR დოკუმენტების კოორდინაცია",
-      "ტრანზიტი და door-to-door გადაწყვეტილებები",
-      "მარშრუტებისა და ხარჯების კონსულტაცია",
-    ],
-    routesTitle: "მოქმედი მარშრუტები",
-    greyLionTag: "GREY LION – კვლევა და ინოვაციები",
-    greyLionTitle: "Saeid Komasi – მექანიკური სისტემები და 500MW კონცეფცია",
-    greyLionDesc:
-      "Grey Lion არის R&D ნაწილი, რომელიც მუშაობს ბერკეტიან-ჯაჭვურ სისტემებზე, კომპოზიტურ ბოჭკოვან მექანიზმებზე და 500 მეგავატიანი მექანიკური ელექტროსადგურის კონცეფციაზე.",
-    contactTitle: "კონტაქტი და თანამშრომლობა",
-    contactText:
-      "ტრანსპორტის შეკვეთებისთვის, გრძელვადიანი კონტრაქტებისა და ინვესტიციებისთვის გამოიყენეთ WhatsApp ან ელ-ფოსტა.",
-  },
-  kk: {
-    companyTag: "Халықаралық автокөлік тасымалы",
-    companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "Еуропа – Таяу Шығыс – Орталық Азия бағыттары",
-    companyDesc:
-      "SAEID4061 SP. Z O.O. – Польшада орналасқан халықаралық тасымал операторы. Компания ЕО ↔ Таяу Шығыс ↔ Орталық Азия бағыттарында CMR / TIR, SENT / EPD / EORI құжаттарын және толық жеткізу тізбегін басқарады.",
-    servicesTitle: "Негізгі қызметтер",
-    servicesList: [
-      "Халықаралық жол тасымалы (CMR / TIR)",
-      "FTL және LTL жүктері",
-      "SENT, EPD, EORI, CMR құжаттарын үйлестіру",
-      "Транзит және door-to-door логистика",
-      "Маршрут пен шығындар бойынша кеңес",
-    ],
-    routesTitle: "Маршруттар және дәліздер",
-    greyLionTag: "GREY LION – ҒЗТКЖ және өнертабыстар",
-    greyLionTitle: "Saeid Komasi – механикалық жүйелер және 500MW концепциясы",
-    greyLionDesc:
-      "Grey Lion жоғары моментті механикалық жүйелерді, Lever-Chain күшейткіштерін және 500MW механикалық электр станциясының концепциясын зерттейді.",
-    contactTitle: "Байланыс және әріптестік",
-    contactText:
-      "Тасымалға сұраныстар, ұзақ мерзімді келісімшарттар немесе инвестициялық әріптестік үшін WhatsApp немесе e-mail арқылы байланысыңыз.",
-  },
-  tk: {
-    companyTag: "Halkara ýük daşyma kompaniýasy",
-    companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "Ýewropa – Ýakyn Gündogar – Merkezi Aziýa ugurlary",
-    companyDesc:
-      "SAEID4061 SP. Z O.O. Polşada ýerleşýän halkara awtoulag ýük daşyma operatorydyr. Kompaniýa ÝB ↔ Ýakyn Gündogar ↔ Merkezi Aziýa aralygynda CMR / TIR, SENT / EPD / EORI resminamalaryny we doly logistika zynjyryny dolandyrýar.",
-    servicesTitle: "Esasy hyzmatlar",
-    servicesList: [
-      "Halkara ýol arkaly ýük daşama (CMR / TIR)",
-      "FTL we LTL ýükler",
-      "SENT, EPD, EORI, CMR resminamalaryny utgaşdyrmak",
-      "Tranzit we door-to-door hyzmatlar",
-      "Ugrlar we çykdajylar boýunça maslahat",
-    ],
-    routesTitle: "Ugurlar we korridorlar",
-    greyLionTag: "GREY LION – R&D we oýlap tapyşlar",
-    greyLionTitle: "Saeid Komasi – mehaniki ulgamlary we 500MW konsepsiýasy",
-    greyLionDesc:
-      "Grey Lion ýokary torkly mehaniki sistemleri, Lever-Chain güýji köpeldiji ulgamlary we 500MW mehaniki elektrik stansiýasynyň konsepsiýasy bilen meşgullanýar.",
-    contactTitle: "Habarlaşmak we hyzmatdaşlyk",
-    contactText:
-      "Daşama, uzak möhletli şertnamalar we maýa goýum boýunça soraglar üçin göni WhatsApp ýa-da e-mail arkaly habarlaşyň.",
-  },
-  mn: {
-    companyTag: "Олон улсын авто тээврийн компани",
-    companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "Европ – Ойрхи Дорнод – Төв Азийн чиглэл",
-    companyDesc:
-      "SAEID4061 SP. Z O.O. нь Польш улсад байрладаг олон улсын авто тээврийн оператор бөгөөд Европ ↔ Ойрхи Дорнод ↔ Төв Азийн коридороор ачаа тээвэрлэдэг. CMR / TIR, SENT / EPD / EORI бичиг баримт болон хүргэлтийн бүх үе шатыг удирддаг.",
-    servicesTitle: "Үндсэн үйлчилгээ",
-    servicesList: [
-      "Олон улсын авто тээвэр (CMR / TIR)",
-      "FTL болон LTL ачаа",
-      "SENT, EPD, EORI, CMR бичиг баримтын зохицуулалт",
-      "Транзит болон door-to-door логистик",
-      "Чиглэл, өртгийн зөвлөгөө",
-    ],
-    routesTitle: "Идэвхтэй чиглэлүүд",
-    greyLionTag: "GREY LION – Судалгаа ба шинэ бүтээл",
-    greyLionTitle: "Saeid Komasi – Механик систем ба 500MW концепц",
-    greyLionDesc:
-      "Grey Lion нь өндөр моменттай механик систем, Lever-Chain өсгөгч механизм, 500MW механик цахилгаан станцын концепцыг хөгжүүлэхэд чиглэгдсэн.",
-    contactTitle: "Холбогдох ба хамтын ажиллагаа",
-    contactText:
-      "Тээврийн захиалга, урт хугацааны гэрээ эсвэл хөрөнгө оруулалтын хамтын ажиллагааны талаар WhatsApp эсвэл e-mail-ээр шууд холбогдоно уу.",
-  },
-  ru: {
-    companyTag: "Международная автотранспортная компания",
-    companyTitle1: "SAEID4061 SP. Z O.O.",
-    companyTitle2: "Европа – Ближний Восток – Центральная Азия",
-    companyDesc:
-      "SAEID4061 SP. Z O.O. — оператор международных автоперевозок, базирующийся в Польше. Компания работает на коридорах Европа ↔ Ближний Восток ↔ Центральная Азия, обеспечивая планирование маршрутов, документы CMR / TIR, процедуры SENT / EPD / EORI и полный контроль поставки.",
-    servicesTitle: "Основные услуги",
-    servicesList: [
-      "Международные автоперевозки (CMR / TIR)",
-      "Полные (FTL) и сборные (LTL) грузы",
-      "Координация документов SENT, EPD, EORI, CMR",
-      "Транзитные и door-to-door решения",
-      "Консультации по маршрутам и стоимости для постоянных клиентов",
-    ],
-    routesTitle: "Действующие маршруты",
-    greyLionTag: "GREY LION – R&D и изобретения",
-    greyLionTitle: "Saeid Komasi – механические системы и концепция 500 МВт",
-    greyLionDesc:
-      "Grey Lion — это исследовательское направление, включающее механические системы с высоким крутящим моментом, рычажно-цепные усилители и концепцию механической электростанции мощностью 500 МВт.",
-    contactTitle: "Контакты и сотрудничество",
-    contactText:
-      "По вопросам перевозок, долгосрочных контрактов и инвестиций обращайтесь напрямую через WhatsApp или e-mail.",
-  },
-};
-
 export default function Home() {
-  const [lang, setLang] = useState<Lang>("fa");
-  const t = TEXT[lang];
+  const [lang, setLang] = useState("fa");
+
+  const translations: Record<
+    string,
+    {
+      title: string;
+      subtitle: string;
+      description: string;
+      services: string;
+      servicesList: string[];
+      contact: string;
+      contactLines: string[];
+    }
+  > = {
+    fa: {
+      title: "SAEID4061 SP. Z O.O.",
+      subtitle: "حمل‌ونقل اروپا – خاورمیانه – آسیای مرکزی",
+      description:
+        "شرکت SAEID4061 SP. Z O.O. یک شرکت حمل‌ونقل بین‌المللی در لهستان است که روی کریدورهای اروپا ↔ خاورمیانه ↔ آسیای میانه فعالیت می‌کند. تمام مراحل حمل از مسیر، اسناد مرزی، SENT, CMR, TIR, EPD تا تحویل نهایی زیر یک مدیریت انجام می‌شود.",
+      services: "خدمات اصلی",
+      servicesList: [
+        "International Freight CMR / TIR",
+        "SENT / EPD / EORI Docs",
+        "EU–ME–Central Asia Corridor",
+        "Transit Route Consulting",
+      ],
+      contact: "راه‌های ارتباطی",
+      contactLines: [
+        "Saeid Komasi – Managing Director",
+        "WhatsApp & Telegram: +48 881 004 737  |  @Saeid4061",
+      ],
+    },
+
+    en: {
+      title: "SAEID4061 SP. Z O.O.",
+      subtitle: "EU – Middle East – Central Asia Transport",
+      description:
+        "SAEID4061 SP. Z O.O. is an international transport company registered in Poland operating across EU ↔ Middle East ↔ Central Asia corridors. Full logistics service including documentation, SENT, CMR, TIR, EPD until final delivery.",
+      services: "Main Services",
+      servicesList: [
+        "International Freight CMR / TIR",
+        "SENT / EPD / EORI Documentation",
+        "EU–ME–Central Asia Corridor",
+        "Transit Route Consulting",
+      ],
+      contact: "Contact",
+      contactLines: [
+        "Saeid Komasi – Managing Director",
+        "WhatsApp & Telegram: +48 881 004 737  |  @Saeid4061",
+      ],
+    },
+
+    pl: {
+      title: "SAEID4061 SP. Z O.O.",
+      subtitle: "Transport UE – Bliski Wschód – Azja Centralna",
+      description:
+        "SAEID4061 SP. Z O.O. to międzynarodowa firma transportowa w Polsce obsługująca korytarze UE ↔ Bliski Wschód ↔ Azja Centralna. Kompleksowa obsługa SENT, CMR, TIR, EPD aż do końcowej dostawy.",
+      services: "Usługi główne",
+      servicesList: [
+        "Międzynarodowy Transport CMR / TIR",
+        "Dokumenty SENT / EPD / EORI",
+        "Korytarz UE–ME–Azja Centralna",
+        "Doradztwo Tranzytowe",
+      ],
+      contact: "Kontakt",
+      contactLines: [
+        "Saeid Komasi – Dyrektor",
+        "WhatsApp & Telegram: +48 881 004 737  |  @Saeid4061",
+      ],
+    },
+
+    ru: {
+      title: "SAEID4061 SP. Z O.O.",
+      subtitle: "Европа – Ближний Восток – Центральная Азия",
+      description:
+        "SAEID4061 SP. Z O.O. — международная транспортная компания в Польше. Маршруты ЕС ↔ Ближний Восток ↔ Центральная Азия. Полная логистика: SENT, CMR, TIR, EPD до конечной доставки.",
+      services: "Основные услуги",
+      servicesList: [
+        "Международные перевозки CMR / TIR",
+        "Документы SENT / EPD / EORI",
+        "Коридор ЕС–Ближний Восток–Центральная Азия",
+        "Транзитное консультирование",
+      ],
+      contact: "Контакты",
+      contactLines: [
+        "Saeid Komasi – Директор",
+        "WhatsApp & Telegram: +48 881 004 737  |  @Saeid4061",
+      ],
+    },
+
+    tr: {
+      title: "SAEID4061 SP. Z O.O.",
+      subtitle: "Avrupa – Orta Doğu – Orta Asya Taşımacılığı",
+      description:
+        "SAEID4061 SP. Z O.O. Polonya merkezli uluslararası taşımacılık şirketidir. EU ↔ Orta Doğu ↔ Orta Asya koridorlarında faaliyet göstermektedir. SENT, CMR, TIR, EPD süreç yönetimi tek elden.",
+      services: "Ana Hizmetler",
+      servicesList: [
+        "Uluslararası Nakliye CMR / TIR",
+        "SENT / EPD / EORI Belge Yönetimi",
+        "EU–ME–Orta Asya Koridoru",
+        "Transit Rota Danışmanlığı",
+      ],
+      contact: "İletişim",
+      contactLines: [
+        "Saeid Komasi – Direktör",
+        "WhatsApp & Telegram: +48 881 004 737  |  @Saeid4061",
+      ],
+    },
+
+    ar: {
+      title: "SAEID4061 SP. Z O.O.",
+      subtitle: "النقل بين أوروبا – الشرق الأوسط – آسيا الوسطى",
+      description:
+        "شركة SAEID4061 SP. Z O.O. تعمل في بولندا في ممرات أوروبا ↔ الشرق الأوسط ↔ آسيا الوسطى. إدارة كاملة لوثائق SENT, CMR, TIR, EPD حتى التسليم النهائي.",
+      services: "الخدمات الرئيسية",
+      servicesList: [
+        "شحن دولي CMR / TIR",
+        "وثائق SENT / EPD / EORI",
+        "ممر أوروبا – الشرق الأوسط – آسيا الوسطى",
+        "استشارات النقل والترانزيت",
+      ],
+      contact: "التواصل",
+      contactLines: [
+        "Saeid Komasi – المدير",
+        "WhatsApp & Telegram: +48 881 004 737  |  @Saeid4061",
+      ],
+    },
+
+    it: {
+      title: "SAEID4061 SP. Z O.O.",
+      subtitle: "Trasporto Europa – Medio Oriente – Asia Centrale",
+      description:
+        "SAEID4061 SP. Z O.O. è una società polacca di trasporto internazionale attiva nei corridoi UE ↔ Medio Oriente ↔ Asia Centrale. Gestione completa di SENT, CMR, TIR, EPD fino alla consegna finale.",
+      services: "Servizi Principali",
+      servicesList: [
+        "Trasporto Internazionale CMR / TIR",
+        "Documenti SENT / EPD / EORI",
+        "Corridoio UE–ME–Asia Centrale",
+        "Consulenza Transito e Logistica",
+      ],
+      contact: "Contatto",
+      contactLines: [
+        "Saeid Komasi – Direttore",
+        "WhatsApp & Telegram: +48 881 004 737  |  @Saeid4061",
+      ],
+    },
+
+    bg: {
+      title: "SAEID4061 SP. Z O.O.",
+      subtitle: "Транспорт Европа – Близък изток – Централна Азия",
+      description:
+        "SAEID4061 SP. Z O.O. е международна транспортна компания в Полша, работеща по коридорите ЕС ↔ Близък изток ↔ Централна Азия. Пълна логистична услуга – документи, SENT, CMR, TIR, EPD до крайна доставка.",
+      services: "Основни услуги",
+      servicesList: [
+        "Международен транспорт CMR / TIR",
+        "Документи SENT / EPD / EORI",
+        "Коридор ЕС–Близък изток–Централна Азия",
+        "Консултации за транзитни маршрути",
+      ],
+      contact: "Контакт",
+      contactLines: [
+        "Saeid Komasi – Управител",
+        "WhatsApp & Telegram: +48 881 004 737  |  @Saeid4061",
+      ],
+    },
+
+    ro: {
+      title: "SAEID4061 SP. Z O.O.",
+      subtitle: "Transport Europa – Orientul Mijlociu – Asia Centrală",
+      description:
+        "SAEID4061 SP. Z O.O. este o companie internațională de transport din Polonia, activă pe coridoarele UE ↔ Orientul Mijlociu ↔ Asia Centrală. Serviciu complet de logistică: documente, SENT, CMR, TIR, EPD până la livrarea finală.",
+      services: "Servicii principale",
+      servicesList: [
+        "Transport internațional CMR / TIR",
+        "Documente SENT / EPD / EORI",
+        "Coridor UE–ME–Asia Centrală",
+        "Consultanță pentru rute de tranzit",
+      ],
+      contact: "Contact",
+      contactLines: [
+        "Saeid Komasi – Director",
+        "WhatsApp & Telegram: +48 881 004 737  |  @Saeid4061",
+      ],
+    },
+  };
+
+  const t = translations[lang];
 
   return (
-    <div className="space-y-8">
-      {/* زبان */}
-      <div className="flex justify-between items-center">
-        <div className="text-xs text-gray-400">{t.companyTag}</div>
+    <main className="p-6 max-w-3xl mx-auto text-white">
+      {/* Header with logo + language selector */}
+      <header className="flex items-center justify-between mb-6">
+        <Image
+          src="/saeid4061-logo.jpg"
+          alt="logo"
+          width={70}
+          height={70}
+          className="rounded-full"
+        />
+
         <select
           value={lang}
-          onChange={(e) => setLang(e.target.value as Lang)}
-          className="bg-gray-900 border border-gray-600 text-xs px-2 py-1 rounded-md"
+          onChange={(e) => setLang(e.target.value)}
+          className="bg-gray-800 px-3 py-2 rounded-md text-sm"
         >
           <option value="fa">فارسی</option>
           <option value="en">English</option>
           <option value="pl">Polski</option>
-          <option value="az">AZE</option>
-          <option value="ka">GEO</option>
-          <option value="kk">KZ</option>
-          <option value="tk">TM</option>
-          <option value="mn">MN</option>
           <option value="ru">Русский</option>
+          <option value="tr">Türkçe</option>
+          <option value="ar">العربية</option>
+          <option value="it">Italiano</option>
+          <option value="bg">Български</option>
+          <option value="ro">Română</option>
         </select>
-      </div>
+      </header>
 
-      {/* عنوان شرکت */}
-      <div>
-        <h1 className="text-3xl md:text-4xl font-bold">{t.companyTitle1}</h1>
-        <h2 className="text-sky-300 text-lg mt-1">{t.companyTitle2}</h2>
-      </div>
+      {/* Main title */}
+      <h1 className="text-4xl font-bold">{t.title}</h1>
+      <p className="mt-2 text-xl text-blue-400">{t.subtitle}</p>
 
-      {/* توضیح شرکت */}
-      <p className="text-sm text-gray-200 leading-6 max-w-3xl">{t.companyDesc}</p>
+      {/* Company description */}
+      <p className="mt-6 leading-8 text-gray-300">{t.description}</p>
 
-      {/* خدمات + مسیرها */}
-      <div className="grid gap-5 md:grid-cols-2">
-        <div className="border border-sky-800 bg-sky-950/30 p-4 rounded-xl">
-          <h3 className="text-sky-300 text-sm mb-2">{t.servicesTitle}</h3>
-          <ul className="text-xs text-gray-100 space-y-1">
-            {t.servicesList.map((item, i) => (
-              <li key={i}>• {item}</li>
-            ))}
-          </ul>
-        </div>
+      {/* Services */}
+      <section className="mt-8 p-5 border rounded-xl border-blue-400">
+        <h2 className="text-xl font-bold mb-3">{t.services}</h2>
+        <ul className="list-disc pl-5 space-y-2 text-gray-200">
+          {t.servicesList.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      </section>
 
-        <div className="border border-sky-800 bg-slate-950/50 p-4 rounded-xl">
-          <h3 className="text-sky-300 text-sm mb-2">{t.routesTitle}</h3>
-          <ul className="text-xs text-gray-100 space-y-1">
-            <li>• Poland / EU 🇵🇱🇪🇺</li>
-            <li>• Türkiye 🇹🇷 ↔ Iran 🇮🇷</li>
-            <li>• Azerbaijan 🇦🇿 · Georgia 🇬🇪</li>
-            <li>• Kazakhstan 🇰🇿 · Turkmenistan 🇹🇲</li>
-            <li>• Mongolia 🇲🇳 (long-haul corridor)</li>
-          </ul>
-        </div>
-      </div>
+      {/* Contact & WhatsApp / Telegram */}
+      <section className="mt-8 p-5 border rounded-xl border-green-400">
+        <h2 className="text-xl font-bold mb-3">{t.contact}</h2>
+        {t.contactLines.map((line, i) => (
+          <p key={i} className="text-gray-300">
+            {line}
+          </p>
+        ))}
 
-      {/* Grey Lion */}
-      <div className="border border-amber-500 bg-amber-900/20 p-4 rounded-xl">
-        <h3 className="text-amber-300 text-sm">{t.greyLionTag}</h3>
-        <p className="text-base font-semibold mt-1">{t.greyLionTitle}</p>
-        <p className="text-xs text-gray-100 mt-2 leading-5">{t.greyLionDesc}</p>
-      </div>
-
-      {/* تماس */}
-      <div className="border border-emerald-600 bg-emerald-900/20 p-4 rounded-xl text-xs text-gray-100">
-        <p className="font-semibold mb-1">{t.contactTitle}</p>
-        <p className="mb-2">{t.contactText}</p>
-        <p>
-          WhatsApp:{" "}
+        <div className="flex gap-2 mt-4">
           <a
             href="https://wa.me/48881004737"
-            className="text-emerald-300 underline underline-offset-2"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full bg-green-500 px-4 py-1.5 text-xs font-semibold text-black hover:bg-green-400"
           >
-            +48 881 004 737
-          </a>{" "}
-          · E-mail:{" "}
-          <a
-            href="mailto:saeedkomasy@gmail.com"
-            className="text-emerald-300 underline underline-offset-2"
-          >
-            saeedkomasy@gmail.com
+            WhatsApp
           </a>
-        </p>
-      </div>
-    </div>
+
+          <a
+            href="https://t.me/Saeid4061"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full bg-sky-500 px-4 py-1.5 text-xs font-semibold text-black hover:bg-sky-400"
+          >
+            Telegram
+          </a>
+        </div>
+      </section>
+    </main>
   );
 }
