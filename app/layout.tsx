@@ -1,66 +1,36 @@
 import "./globals.css";
-import Image from "next/image";
-import Link from "next/link";
+import LanguageSwitcher from "./company/LanguageSwitcher";
 
 export const metadata = {
-  title: "SAEID4061 · GREY LION",
-  description: "International Transport · Europe · Middle East · Central Asia",
+  title: "SAEID4061 • GREY LION",
+  description: "International Transportation & Logistics",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }) {
   return (
-    <html lang="fa" dir="rtl">
-      <body className="bg-black text-white">
+    <html lang="fa">
+      <body style={{ background:"#000", color:"#fff", fontFamily:"sans-serif" }}>
 
-        {/* ================= HEADER ================= */}
-        <header className="w-full flex items-center justify-between px-6 py-3 border-b border-gray-700">
-          
-          {/* ===== Logo LEFT ===== */}
-          <div className="flex items-center gap-3">
-            <Image
-              src="/saeid4061-logo.jpg"
-              width={58}
-              height={58}
-              alt="SAEID4061 LOGO"
-              className="rounded-full border border-sky-400 shadow-lg"
-              priority
-            />
-
-            <div className="text-lg font-bold leading-5">
-              SAEID4061 <span className="text-sky-400">· GREY LION</span>
-            </div>
+        {/* 🔹 هدر سایت */}
+        <header style={{
+          display:"flex",
+          justifyContent:"space-between",
+          alignItems:"center",
+          padding:"15px 30px",
+          borderBottom:"1px solid #333"
+        }}>
+          <div style={{fontSize:"22px", fontWeight:"bold", color:"#66b2ff"}}>
+            GREY LION • SAEID4061
           </div>
 
-          {/* ===== LANGUAGE SWITCH ===== */}
-          <select
-            className="bg-gray-900 p-2 rounded-md border border-gray-600 text-sm"
-            onChange={(e) => window.location.href = e.target.value}
-          >
-            <option value="/">فارسی</option>
-            <option value="/en">English</option>
-            <option value="/ru">Русский</option>
-            <option value="/tr">Türkçe</option>
-            <option value="/de">Deutsch</option>
-            <option value="/pl">Polski</option>
-            <option value="/ar">العربية</option>
-            <option value="/cn">中文</option>
-            <option value="/in">हिन्दी</option>
-          </select>
+          {/* 🔴 منوی انتخاب زبان — اکنون ۱۴ زبان */}
+          <LanguageSwitcher />
         </header>
 
-        {/* ================= CONTENT (MAIN PAGES) ================= */}
-        <main className="px-6 py-8 max-w-5xl mx-auto">{children}</main>
-
-        {/* ================= FOOTER ================= */}
-        <footer className="mt-10 border-t border-gray-800 py-6 text-center text-sm text-gray-400">
-          <p>SAEID4061 SP. Z O.O. © All Rights Reserved</p>
-          <p className="mt-1">
-            WhatsApp:{" "}
-            <Link className="text-sky-400" href="https://wa.me/48881004737" target="_blank">
-              +48 881 004 737
-            </Link>
-          </p>
-        </footer>
+        {/*  محتوای صفحات  */}
+        <main style={{padding:"30px"}}>
+          {children}
+        </main>
 
       </body>
     </html>
