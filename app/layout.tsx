@@ -1,51 +1,57 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import Link from "next/link";
+import "./globals.css"
+import Image from "next/image"
 
-export const metadata: Metadata = {
-  title: "SAEID4061 SP. Z O.O. – International Transport & Saeid Komasi",
-  description:
-    "International road transportation | Europe–Asia corridor. WhatsApp: +48 881 004 737",
+export const metadata = {
+  title: "SAEID4061 SP.Z O.O. — GREY LION",
+  description: "International Transport — Europe ↔ Middle East ↔ Central Asia",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="bg-black text-white">
-        {/* هدر مشترک کل سایت */}
-        <header className="border-b border-zinc-800">
-          <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-            <Link
-              href="/"
-              className="font-semibold text-xs sm:text-sm tracking-wide text-sky-400"
-            >
-              GREY LION • SAEID4061 SP. Z O.O.
-            </Link>
+    <html lang="fa">
+      <body style={{ background: "#000", color: "#fff", fontFamily: "sans-serif" }}>
 
-            <nav className="flex gap-4 text-[11px] sm:text-xs text-zinc-300">
-              <Link href="/" className="hover:text-sky-300">
-                Personal
-              </Link>
-              <Link href="/company" className="hover:text-sky-300">
-                Company
-              </Link>
-            </nav>
+        {/* 🔷 هدر سایت */}
+        <header style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "14px",
+          padding: "18px 30px",
+          borderBottom: "1px solid rgba(255,255,255,0.15)",
+        }}>
+
+          <Image
+            src="/saeid4061-logo.jpg"   // مسیر صحیح بدون public
+            alt="SAEID4061 LOGO"
+            width={56}
+            height={56}
+            style={{ borderRadius: "50%", objectFit: "cover" }}
+          />
+
+          <div>
+            <h2 style={{ fontSize: "18px", margin: 0, letterSpacing: "1px" }}>
+              SAEID4061 · GREY LION
+            </h2>
           </div>
+
         </header>
 
-        {/* محتوای صفحه‌ها */}
-        <main className="max-w-5xl mx-auto px-4 py-8 sm:py-10">
+        {/* 🔥 محتوا */}
+        <main style={{ padding: "30px", maxWidth: "900px", margin:"auto" }}>
           {children}
         </main>
 
-        {/* فوتر مشترک */}
-        <footer className="border-t border-zinc-800 text-[11px] sm:text-xs text-zinc-400 text-center py-3">
-          © {new Date().getFullYear()} SAEID4061 SP. Z O.O. • WhatsApp: +48 881 004 737
+        {/* فوتر سایت */}
+        <footer style={{
+          marginTop: "60px",
+          padding: "25px",
+          textAlign: "center",
+          opacity: .6,
+          borderTop: "1px solid rgba(255,255,255,0.12)"
+        }}>
+          © {new Date().getFullYear()} SAEID4061 SP. Z O.O. | All Rights Reserved
         </footer>
+
       </body>
     </html>
   );
