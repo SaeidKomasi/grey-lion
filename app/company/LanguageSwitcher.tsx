@@ -1,46 +1,43 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-const languages = [
- { code:"fa",  label:"فارسی" },
- { code:"en",  label:"English" },
- { code:"pl",  label:"Polski" },
- { code:"az",  label:"Azərbaycan" },
- { code:"ka",  label:"ქართული" },
- { code:"kz",  label:"Қазақ" },
- { code:"tm",  label:"Türkmen" },
- { code:"mn",  label:"Монгол" },
- { code:"ru",  label:"Русский" },
- { code:"it",  label:"Italiano" },
- { code:"bg",  label:"Български" },
- { code:"ro",  label:"Română" },
- { code:"es",  label:"Español" },
- { code:"nl",  label:"Nederlands" }
-];
+export default function LanguageSwitcher() {
+  const [lang, setLang] = useState("fa");
 
-export default function LanguageSwitcher(){
- const [lang,setLang]=useState("fa");
+  const languages = [
+    { code: "fa", label: "فارسی" },
+    { code: "en", label: "English" },
+    { code: "pl", label: "Polski" },
+    { code: "az", label: "AZ" },
+    { code: "ka", label: "KA" }, // Georgian
+    { code: "kz", label: "KZ" }, // Kazakhstan
+    { code: "tm", label: "TM" }, // Turkmenistan
+    { code: "mn", label: "MN" }, // Mongolia
+    { code: "ru", label: "RU" }, // Russia
 
- useEffect(()=>{
-   const saved = localStorage.getItem("lang");
-   if(saved) setLang(saved);
- },[]);
+    // 🔥 زبان‌های اضافه شده جدید
+    { code: "it", label: "Italiano" }, // ایتالیایی
+    { code: "es", label: "Español" }, // اسپانیایی
+    { code: "nl", label: "Nederlands" }, // هلندی
+    { code: "bg", label: "Български" }, // بلغاری
+    { code: "ro", label: "Română" } // رومانی
+  ];
 
- const changeLang = (code:string)=>{
-   setLang(code);
-   localStorage.setItem("lang",code);
-   location.reload();
- };
-
- return (
-   <select 
-     value={lang}
-     onChange={(e)=>changeLang(e.target.value)}
-     style={{padding:8,borderRadius:6,marginLeft:10}}
-   >
-     {languages.map(l=>(
-       <option key={l.code} value={l.code}>{l.label}</option>
-     ))}
-   </select>
- );
+  return (
+    <select
+      value={lang}
+      onChange={(e) => setLang(e.target.value)}
+      style={{
+        background:"#111", color:"#fff",
+        padding:"10px 18px", borderRadius:"10px",
+        border:"1px solid #444", fontSize:"16px"
+      }}
+    >
+      {languages.map(l => (
+        <option key={l.code} value={l.code}>
+          {l.label}
+        </option>
+      ))}
+    </select>
+  );
 }
