@@ -1,108 +1,49 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
-import LanguageSwitcher from "./LanguageSwitcher";
+type Props = {
+  lang: string;
+  onChange: (code: string) => void;
+};
 
-// متن‌ها برای هر زبان
-const translations: Record<
-  string,
-  {
-    tagline: string;
-    description: string;
-    servicesTitle: string;
-    services: string[];
-    contactTitle: string;
-    contactLines: string[];
-  }
-> = {
-  fa: {
-    tagline: "حمل‌ونقل اروپا – خاورمیانه – آسیای مرکزی",
-    description:
-      "شرکت SAEID4061 SP. Z O.O. یک شرکت حمل‌ونقل بین‌المللی در لهستان است که روی کریدورهای اروپا ↔ خاورمیانه ↔ آسیای میانه فعالیت می‌کند. تمام مراحل حمل از مبدا، اسناد مرزی، SENT، CMR، TIR، EPD تا تحویل نهایی زیر یک مدیریت انجام می‌شود.",
-    servicesTitle: "خدمات اصلی",
-    services: [
-      "International Freight CMR / TIR",
-      "SENT / EPD / EORI Docs",
-      "EU–ME–Central Asia Corridor",
-      "Transit Route Consulting",
-    ],
-    contactTitle: "تماس و ارتباط",
-    contactLines: [
-      "WhatsApp: +48 881 004 737",
-      "Telegram: @Saeid4061",
-      "مبدا فعالیت: لهستان – Biała Podlaska",
-    ],
-  },
+export default function LanguageSwitcher({ lang, onChange }: Props) {
+  const languages = [
+    { code: "fa", label: "فارسی" },
+    { code: "en", label: "English" },
+    { code: "pl", label: "Polski" },
+    { code: "az", label: "AZ" },          // Azerbaijan
+    { code: "ka", label: "KA" },          // Georgia
+    { code: "kz", label: "KZ" },          // Kazakhstan
+    { code: "tm", label: "TM" },          // Turkmenistan
+    { code: "mn", label: "MN" },          // Mongolia
+    { code: "ru", label: "RU" },          // Russia
+    { code: "it", label: "Italiano" },    // Italy
+    { code: "es", label: "Español" },     // Spain
+    { code: "nl", label: "Nederlands" },  // Netherlands
+    { code: "bg", label: "Български" },   // Bulgaria
+    { code: "ro", label: "Română" }       // Romania
+  ];
 
-  en: {
-    tagline: "Road freight Europe – Middle East – Central Asia",
-    description:
-      "SAEID4061 SP. Z O.O. is an international road transport company based in Poland, operating on key corridors between the European Union, the Middle East and Central Asia. We manage the full transport chain: customs documents, SENT, CMR, TIR, EPD and final delivery under one coordination.",
-    servicesTitle: "Main Services",
-    services: [
-      "International Road Freight (CMR / TIR)",
-      "SENT / EPD / EORI documentation",
-      "EU–Middle East–Central Asia transport corridors",
-      "Transit route planning & consulting",
-    ],
-    contactTitle: "Contact",
-    contactLines: [
-      "WhatsApp: +48 881 004 737",
-      "Telegram: @Saeid4061",
-      "Head office: Poland – Biała Podlaska",
-    ],
-  },
-
-  pl: {
-    tagline: "Transport drogowy Europa – Bliski Wschód – Azja Centralna",
-    description:
-      "SAEID4061 SP. Z O.O. to firma transportu międzynarodowego z siedzibą w Polsce, działająca na korytarzach UE ↔ Bliski Wschód ↔ Azja Centralna. Prowadzimy cały proces przewozu: dokumenty celne, SENT, CMR, TIR, EPD aż do końcowej dostawy pod jedną koordynacją.",
-    servicesTitle: "Główne usługi",
-    services: [
-      "Międzynarodowy transport drogowy (CMR / TIR)",
-      "Dokumentacja SENT / EPD / EORI",
-      "Korytarze transportowe UE–Bliski Wschód–Azja Centralna",
-      "Planowanie i doradztwo w tranzycie",
-    ],
-    contactTitle: "Kontakt",
-    contactLines: [
-      "WhatsApp: +48 881 004 737",
-      "Telegram: @Saeid4061",
-      "Siedziba: Polska – Biała Podlaska",
-    ],
-  },
-
-  az: {
-    tagline: "Avropa – Yaxın Şərq – Mərkəzi Asiya yükdaşıma",
-    description:
-      "SAEID4061 SP. Z O.O. Polşada yerləşən beynəlxalq avtomobil daşıma şirkətidir. Şirkət Avropa İttifaqı, Yaxın Şərq və Mərkəzi Asiya marşrutlarında fəaliyyət göstərir. Sənədlər, SENT, CMR, TIR, EPD və son təhvil tam olaraq bir idarəetmə altında icra olunur.",
-    servicesTitle: "Əsas xidmətlər",
-    services: [
-      "Beynəlxalq avtomobil yükdaşıması (CMR / TIR)",
-      "SENT / EPD / EORI sənədləri",
-      "Aİ–Yaxın Şərq–Mərkəzi Asiya dəhlizləri",
-      "Tranzit marşrut məsləhəti",
-    ],
-    contactTitle: "Əlaqə",
-    contactLines: ["WhatsApp: +48 881 004 737", "Telegram: @Saeid4061"],
-  },
-
-  ka: {
-    tagline: "საბარგო გადაზიდვა ევროპა – შუა აღმოსავლეთი – ცენტრალური აზია",
-    description:
-      "SAEID4061 SP. Z O.O. არის პოლონეთში დაფუძნებული საერთაშორისო საავტომობილო გადამზიდავი კომპანია, რომელიც მუშაობს ევროკავშირის, შუა აღმოსავლეთისა და ცენტრალური აზიის კორიდორებზე.",
-    servicesTitle: "ძირითადი სერვისები",
-    services: [
-      "საერთაშორისო საავტომობილო გადაზიდვა (CMR / TIR)",
-      "SENT / EPD / EORI დოკუმენტაცია",
-      "EU–Middle East–Central Asia კორიდორები",
-      "ტრანზიტის მარშრუტების დაგეგმვა",
-    ],
-    contactTitle: "კონტაქტი",
-    contactLines: ["WhatsApp: +48 881 004 737", "Telegram: @Saeid4061"],
-  },
-
+  return (
+    <select
+      value={lang}
+      onChange={(e) => onChange(e.target.value)}
+      style={{
+        background: "#111",
+        color: "#fff",
+        padding: "10px 18px",
+        borderRadius: "10px",
+        border: "1px solid #444",
+        fontSize: "16px",
+      }}
+    >
+      {languages.map((l) => (
+        <option key={l.code} value={l.code}>
+          {l.label}
+        </option>
+      ))}
+    </select>
+  );
+}
   kz: {
     tagline: "Еуропа – Таяу Шығыс – Орталық Азия жүк тасымалы",
     description:
